@@ -3,5 +3,5 @@ import { DemoWorkspace } from "@/components/demo-workspace";
 
 export const metadata = { title: "Interactive demo" };
 export default function Demo() {
-  return <><Header /><DemoWorkspace /></>;
+  return <div className="demo-shell"><Header /><DemoWorkspace /></div>;
 }

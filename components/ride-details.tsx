@@ -1,4 +1,5 @@
 import { CalendarClock, CarFront, MapPin, UsersRound } from "lucide-react";
+import type { ReactNode } from "react";
 import type { FormAction } from "@/lib/action-state";
 import type { RideResult } from "@/lib/data";
 import { formatTime } from "@/lib/time";
@@ -6,7 +7,11 @@ import { DetourEstimate, MapActions, RouteStops } from "./matches";
 import { Empty } from "./shell";
 import { ActionForm } from "./ui/form";
 
-export function RideDetails({ ride, respond }: { ride: RideResult; respond?: FormAction }) {
+export function RideDetails({ ride, respond, driverActions }: {
+  ride: RideResult;
+  respond?: FormAction;
+  driverActions?: ReactNode;
+}) {
   const { driver, riders, departureAt } = ride;
   const isDriver = ride.role === "DRIVER";
   const outbound = ride.leg === "TO_EVENT";
@@ -14,7 +19,7 @@ export function RideDetails({ ride, respond }: { ride: RideResult; respond?: For
   const destination = outbound ? ride.venue : ride.location;
   return <div className="ride-detail-stack">
     {driver && departureAt ? <>
-      {isDriver && riders && respond ? <>
+      {isDriver && riders && (respond || driverActions) ? <>
         <section className="card match-card">
           <div className="cluster"><div className="feature-icon"><CarFront size={23} /></div>
             <div><h3>Your driving route</h3><p className="muted">{riders.length} passenger{riders.length === 1 ? "" : "s"}</p></div>
@@ -34,13 +39,13 @@ export function RideDetails({ ride, respond }: { ride: RideResult; respond?: For
         </section>
         <section className="card form-section">
           <h3>{ride.status === "CONFIRMED" ? "Your ride is confirmed" : "Can you drive this route?"}</h3>
-          <div className="ride-responses">
+          <div className="ride-responses">{driverActions ?? (respond && <>
             {ride.status !== "CONFIRMED" && <ActionForm action={respond} submit="Confirm ride" value="CONFIRMED" />}
             <ActionForm action={respond} submit={ride.status === "CONFIRMED" ? "Withdraw as driver" : "Decline ride"} value="DECLINED" variant="danger">
               {ride.status === "CONFIRMED" && <label className="checkbox"><input type="checkbox" required />
                 <span>I can no longer drive this trip.</span></label>}
             </ActionForm>
-          </div>
+          </>)}</div>
         </section>
       </> : <section className="card form-section">
         <div className="cluster"><div className="feature-icon"><CarFront size={23} /></div>

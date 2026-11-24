@@ -19,15 +19,24 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
   const destination = organizerDestination(search.next);
   if (await organizer()) redirect(destination);
   const configured = Boolean(privateSupabase());
+  const googleEnabled = googleLoginEnabled();
+  const emailCodeForm = <OrganizerCodeForm destination={destination} />;
   return <><Header /><main className="frame page login-page">
     <div className="feature-icon"><LockKeyhole size={24} /></div>
-    <PageHeading title="Organizer sign in" description="Sign in or create an organizer account to manage your events." />
+    <PageHeading title="Organizer sign in" description={destination === "/dashboard/events/new"
+      ? "Sign in to create your event and get a registration link to share."
+      : "Sign in or create an organizer account to manage your events."} />
     <section className="card login-card form-section">
       {configured ? <>
-        {search.auth_failed && <p role="alert" className="notice error">Google sign-in couldn’t finish. Try again or sign in with an email code.</p>}
-        <OrganizerCodeForm destination={destination} />
-        {googleLoginEnabled() && <ActionForm action={signInWithGoogle.bind(null, destination)} submit="Continue with Google"
-          pendingLabel="Opening Google…" variant="secondary" />}
+        {search.auth_failed && <p role="alert" className="notice error">Google sign-in couldn’t finish. Please try again.</p>}
+        {googleEnabled ? <>
+          <ActionForm className="form-section google-sign-in" action={signInWithGoogle.bind(null, destination)}
+            submit="Continue with Google" pendingLabel="Opening Google…" />
+          <details className="coordinates">
+            <summary>Use an email code</summary>
+            {emailCodeForm}
+          </details>
+        </> : emailCodeForm}
         <details className="coordinates">
           <summary>Use a password</summary>
           <ActionForm className="form-section" action={signInWithPassword.bind(null, destination)} submit="Sign in with password" pendingLabel="Signing in…">
@@ -37,8 +46,9 @@ export default async function Login({ searchParams }: { searchParams: Promise<{ 
         </details>
       </> : <><h2>Organizer access needs setup</h2>
         <p className="muted">Connect a Supabase project to create events and collect registrations. You can try ride matching now with fictional data.</p>
-        <Link className={buttonVariants()} href="/demo">Explore the demo</Link>
+        <Link className={buttonVariants()} href="/demo">Try the demo</Link>
       </>}
     </section>
+    {configured && <p className="login-demo"><Link className="text-link" href="/demo">Try the demo</Link></p>}
   </main></>;
 }

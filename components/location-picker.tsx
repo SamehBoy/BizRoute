@@ -142,9 +142,9 @@ export function LocationPicker({ value, onChange, center, hubs = [], label = "Lo
     <details className="coordinates">
       <summary>Enter coordinates manually{hasPoint(value) && <span>{value.lat.toFixed(4)}, {value.lng.toFixed(4)}</span>}</summary>
       <div className="field-grid">
-        <label className="field"><span>Latitude</span><input inputMode="decimal" placeholder="e.g. 47.6219"
+        <label className="field"><span>Latitude</span><input inputMode="decimal" placeholder="e.g. 49.2890"
           value={fields.lat} onChange={(event) => edit("lat", event.target.value)} /></label>
-        <label className="field"><span>Longitude</span><input inputMode="decimal" placeholder="e.g. −122.3506"
+        <label className="field"><span>Longitude</span><input inputMode="decimal" placeholder="e.g. −123.1167"
           value={fields.lng} onChange={(event) => edit("lng", event.target.value)} /></label>
       </div>
     </details>

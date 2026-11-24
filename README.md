@@ -1,7 +1,7 @@
 # BizRoute
 A carpool matching app for socials and events
 
-Carpool helps event organizers collect driver offers and ride requests, match trips in each direction, and share private ride links. Guests register without accounts. Drivers confirm or decline after reviewing their suggested route.
+BizRoute helps event organizers collect driver offers and ride requests, match trips in each direction, and share private ride links. Guests register without accounts. Drivers confirm or decline after reviewing their suggested route.
 
 ## Run locally
 
@@ -12,12 +12,12 @@ npm ci
 npm run dev
 ```
 
-Open [the interactive demo](http://127.0.0.1:4327/demo) to run both match directions with fictional Seattle participants and open the resulting Google Maps links. This preview needs no Supabase credentials and keeps its proposals in the current browser session.
+Open [the interactive demo](http://127.0.0.1:4327/demo) to set up a fictional Vancouver event, try guest signup, approve the matches, and follow a driver’s route in Google Maps. The demo runs in the browser without Supabase credentials.
 
 ### Enable registration and organizer accounts
 
 1. In the Supabase SQL Editor, apply the [initial schema](supabase/migrations/20261121000000_carpool.sql), [detour units](supabase/migrations/20261121010000_carpool_detour_km.sql), [ride coordination](supabase/migrations/20261121020000_carpool_coordination.sql), and [My ride](supabase/migrations/20261121030000_carpool_my_ride.sql) migrations in order. If the first three are already applied, run the My ride migration only. For a project whose migrations are tracked by the Supabase CLI, use `supabase db push`. [Supabase migration workflow](https://supabase.com/docs/guides/local-development/cli-workflows)
-2. In Supabase Authentication, enable the email provider, allow new user sign-ups, and keep email confirmation enabled. Configure a custom SMTP sender for public delivery. In the authentication email templates, include `{{ .Token }}` in the **Magic Link** and **Confirm signup** templates so organizers get a code they can enter in Carpool. Existing organizers can also sign in with their passwords. [Auth settings](https://supabase.com/docs/guides/auth/general-configuration) · [Email codes](https://supabase.com/docs/guides/auth/auth-email-passwordless) · [Custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp)
+2. In Supabase Authentication, enable the email provider, allow new user sign-ups, and keep email confirmation enabled. Configure a custom SMTP sender for public delivery. In the authentication email templates, include `{{ .Token }}` in the **Magic Link** and **Confirm signup** templates so organizers get a code they can enter in BizRoute. Existing organizers can also sign in with their passwords. [Auth settings](https://supabase.com/docs/guides/auth/general-configuration) · [Email codes](https://supabase.com/docs/guides/auth/auth-email-passwordless) · [Custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp)
 3. Copy `.env.example` to `.env.local`. Fill in the values below. Generate a unique ride-link secret with `openssl rand -hex 32`. [Supabase API keys](https://supabase.com/docs/guides/getting-started/api-keys)
 4. To offer **Continue with Google**, create a Google OAuth client for public use, register the Supabase callback shown in the Google provider settings, and save the client ID and secret in Supabase. Allow your app's `/auth/callback` URL in Supabase Auth, set `NEXT_PUBLIC_APP_URL` to the app origin, and set `CARPOOL_GOOGLE_LOGIN=true`. [Supabase Google sign-in](https://supabase.com/docs/guides/auth/social-sign-in/auth-google) · [Auth redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls)
 5. Restart the local server and sign in at [Organizer sign in](http://127.0.0.1:4327/login). Create an event or choose **Create sample event** to populate a persisted fictional event.
@@ -36,7 +36,7 @@ Open [the interactive demo](http://127.0.0.1:4327/demo) to run both match direct
 ## Organizer walkthrough
 
 1. Create an event with the schedule, time zone, and venue. Select points on the map or enter coordinates manually.
-2. Copy the signup link. Guests enter their trip preferences and consent, then Carpool opens their private **My ride** page for both directions. They can use the original event link in the same browser or save their private link for another device.
+2. Copy the signup link. Guests enter their trip preferences and consent, then BizRoute opens their private **My ride** page for both directions. They can use the original event link in the same browser or save their private link for another device.
 3. Open **Review matches** and generate a proposal for either direction. Each car shows assigned and offered seats, such as **2/3**. **Needs coordination** checks open seats, configured outbound pickup hubs, and availability changes of up to 30 minutes. For alternate pickups or timing, agree on the change with the rider, then choose **Add to carpool**. You can also fill a seat in an approved run while leaving confirmed cars and other assignments intact. The affected driver reviews their updated route before confirming it.
 4. Approve the proposal. Guests can view the assignment in **My ride**. The participant roster provides a private fallback link if a guest loses access, and older registrations keep their per-trip links.
 5. Drivers open Google Maps and confirm or decline from **My ride**. A decline removes shared details for that carpool, reveals its unmatched riders in the organizer view, and excludes the declined offer from subsequent proposals. Regeneration creates a draft. Approving a new draft replaces the live run for that leg and asks its drivers to respond again.

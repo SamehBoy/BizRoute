@@ -5,9 +5,9 @@ import { buttonVariants } from "./ui/button";
 import { signOut } from "@/app/actions";
 
 export function Brand() {
-  return <Link href="/" className="brand" aria-label="Carpool home">
+  return <Link href="/" className="brand" aria-label="BizRoute home">
     <span className="brand-mark"><CarFront size={21} strokeWidth={2.3} /></span>
-    <span>carpool<span className="brand-dot">.</span></span>
+    <span>Biz<span className="brand-accent">Route</span></span>
   </Link>;
 }
 

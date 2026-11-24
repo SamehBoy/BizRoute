@@ -8,6 +8,6 @@ export default function ErrorPage({ reset }: { reset: () => void }) {
     <h1>Something went wrong</h1>
     <p>Try loading this page again in a moment.</p>
     <div className="cluster"><Button onClick={reset}>Try again</Button>
-      <Link href="/" className={buttonVariants({ variant: "secondary" })}>Back to Carpool</Link></div>
+      <Link href="/" className={buttonVariants({ variant: "secondary" })}>Back to BizRoute</Link></div>
   </section></main>;
 }

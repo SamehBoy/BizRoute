@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: { default: "Carpool — Better rides to good events", template: "%s · Carpool" },
+  title: { default: "BizRoute — Better rides to good events", template: "%s · BizRoute" },
   description: "Organize rides to and from any event. Collect trip preferences, match passengers with drivers, and share private ride details.",
   icons: { icon: "/icon.svg" },
 };

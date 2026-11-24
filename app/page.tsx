@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CalendarPlus, Link2, Route, UsersRound } from "lucide-react";
+import { CalendarPlus, Link2, Play, Route, UsersRound } from "lucide-react";
 import { Header, Footer } from "@/components/shell";
 import { HeroMap } from "@/components/hero-map";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,7 @@ export default function Home() {
             <p className="hero-description">Match drivers and passengers for the trip there and the trip home. All from one event link.</p>
             <div className="hero-actions">
               <Button asChild><Link href="/login?next=/dashboard/events/new"><CalendarPlus size={19} /> Create an event</Link></Button>
-              <Button asChild variant="secondary"><Link href="/demo">Explore the demo</Link></Button>
+              <Button asChild variant="secondary"><Link href="/demo"><Play size={17} aria-hidden="true" /> Try the demo</Link></Button>
             </div>
             <p className="hero-note"><Link2 size={16} /> No account needed for guests.</p>
           </div>
